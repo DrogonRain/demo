@@ -1,5 +1,6 @@
 package cn.zhangbin.selfstudy.day05;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class JavaApiDemo {
@@ -15,7 +16,27 @@ public class JavaApiDemo {
         String getMethodName = "getName"; // 方法名称
         Method getMethod = cls.getDeclaredMethod(getMethodName); // 获取Getter方法
         System.out.println(getMethod.invoke(obj)); // 等价于   -  对象.getName()
+        { // 获取父类中定义的公共成员变量
+            Field[] fields = cls.getFields(); // 获取成员
+            for (Field fie : fields) {
+                System.out.println(fie);
+            }
+        }
+        System.out.println("---------------");
+        { // 获取子类中的成员
+            Field[] fields = cls.getDeclaredFields(); // 获取成员
+            for (Field fie : fields) {
+                System.out.println(fie);
+            }
+        }
 
+        Object obj2 = cls.getConstructor().newInstance(); // 实例化对象
+        Field nameField = cls.getDeclaredField("name");
+        System.out.println(nameField.getType().getName()); // 获取类的完整名称
+        System.out.println(nameField.getType().getSimpleName()); // 获得类名本身
+        nameField.setAccessible(true); // 解除封装
+        nameField.set(obj2,"张三");
+        System.out.println(nameField.get(obj2));
 
 
 //        Class<?> cls = Pson.class; // 获取指定的类的Class对象
